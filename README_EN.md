@@ -184,6 +184,16 @@ def send_notification(vuln_info, template: str, delaytime: int):
 
 > 👨🏻‍🔧 Regular updates. If you have suggestions or issues, please create an issue, and we will implement and optimize as soon as possible.
 
+### 2026/04/08 - v1.2.0
+
+- Added PushMe notification support, including compatibility with self-hosted PushMe servers
+- Added support for sending through both Server酱3 and PushMe, or using PushMe only
+- Added the `Test PushMe` workflow for PushMe connectivity testing
+- Added the `Test CVE Push Service` workflow for simulating the main CVE push pipeline
+- Optimized PushMe notification titles with compact date display
+- Added PushMe dashboard cards for `Today's High-Risk CVEs` and `Today's POC/EXP`
+- Updated GitHub Actions versions for Node.js 24 compatibility
+
 ### 2025/11/25 - v1.1.2
 
 - Add English template and README

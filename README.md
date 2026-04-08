@@ -87,7 +87,7 @@
 - 本地运行：设置好环境变量后执行 `python Test_PushMe.py`
 - GitHub Actions：在仓库 `Actions` 页打开 `Test PushMe`，手动点击 `Run workflow`
 - 成功时，你会收到一条标题为 `PushMe 测试消息` 的通知
-- 失败时，请优先检查 `PUSHME_URL` 是否为 `http://118.178.86.67:3010/`、`PUSHME_KEY` 是否正确，以及服务器安全组/防火墙是否放行 `3010` 端口
+- 失败时，请优先检查 `PUSHME_URL` 是否为 `http://ip:3010/`、`PUSHME_KEY` 是否正确，以及服务器安全组/防火墙是否放行 `3010` 端口
 
 #### 如何测试主服务的 CVE 情报推送链路？
 
@@ -123,10 +123,14 @@
 - 再点击上面的 `Actions` 选择 `Auto CVE Push Service` 看看有没有报错。
 - 没有报错的话Server酱里应该就会有推送通知了（记得打开Server酱App通知权限）
 - 其他新更新的功能重复上述操作即可，随着功能的增加后续考虑将所有功能合并，避免操作繁琐。
-- 推推送效果示例：
-
+- Server酱3推送效果示例：
 
 <img src="images/9.jpg" alt="Push Example 2" width="100%">
+
+- PushMe推送效果
+
+<img src="https://cdn.jsdmirror.com/gh/hzhsec/upload@main/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20260408141004_267_8.jpg" alt="微信图片_20260408141004_267_8.jpg|" style="zoom:20%;" />
+
 
 
 ### 注意
@@ -148,6 +152,16 @@
 ## 📅 更新日志
 
 > 👨🏻‍🔧不定期持续更新，如有建议和问题可提Issues，将尽快实现与优化。
+
+### 2026/04/08 - v1.2.0
+
+- 新增 PushMe 推送支持，兼容自建 PushMe 服务
+- 支持 Server酱3 与 PushMe 同时推送，也可单独仅使用 PushMe
+- 新增 PushMe 连通性测试工作流 `Test PushMe`
+- 新增主服务模拟推送测试工作流 `Test CVE Push Service`
+- 优化 PushMe 推送标题，标题中增加简洁日期显示
+- 新增 PushMe 数据小屏，支持展示 `今日新增高危CVE` 与 `今日新增POC/EXP`
+- 更新 GitHub Actions 版本，兼容 Node.js 24
 
 ### 2025/11/25 - v1.1.2
 
