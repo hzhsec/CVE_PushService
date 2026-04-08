@@ -1,0 +1,30 @@
+name: Test CVE Push Service
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test-cve-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          pip install requests
+          pip install serverchan-sdk
+
+      - name: Send simulated CVE notification
+        env:
+          SCKEY: ${{ secrets.SCKEY }}
+          PUSHME_KEY: ${{ secrets.PUSHME_KEY }}
+          PUSHME_URL: ${{ secrets.PUSHME_URL }}
+        run: |
+          python Test_CVE_PushService.py
