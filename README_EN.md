@@ -63,11 +63,44 @@ Many new users who are using GitHub for the first time have been using this proj
 
 ![2.png](images/2.png)
 
-### 2. Configure SendKey and GithubToken
+### 2. Configure SendKey / PushMe / GithubToken
 
 This repository has built-in GitHub Actions workflow ([AutoCVE.yml](./workflows/AutoCVE.yml)).
 You only need to configure the following variables in the repository Settings → Secrets:
 - SCKEY: Your newly registered Server酱3 SendKey (Note: no spaces or line breaks)
+- PUSHME_KEY: Your PushMe `push_key`
+- PUSHME_URL: Your PushMe service URL; use `https://push.i-i.me/` for the official service, or `http://your-server-ip:3010/` for self-hosted deployment
+
+> You can configure both `SCKEY` and `PUSHME_KEY` at the same time, and the script will push to both channels. If you only want to use PushMe, just configure `PUSHME_KEY` and `PUSHME_URL`.
+
+#### What parameters are required for PushMe?
+
+- `PUSHME_KEY`: Required. This is the `push_key` from the PushMe app.
+- `PUSHME_URL`: Recommended. Required when using a self-hosted PushMe server, for example `http://118.178.86.67:3010/`
+- `title` / `content` / `type`: These are generated automatically by the script, so you do not need to configure them manually.
+
+> This project currently sends PushMe messages in `markdown` format by default.
+
+#### How to test whether PushMe works?
+
+- Local test: set the environment variables and run `python Test_PushMe.py`
+- GitHub Actions: open `Test PushMe` in the `Actions` page and click `Run workflow`
+- If successful, you will receive a notification titled `PushMe Test Message`
+- If it fails, first check whether `PUSHME_URL` is `http://ip:3010/`, whether `PUSHME_KEY` is correct, and whether port `3010` is allowed by your firewall or security group
+
+#### How to test the main CVE push pipeline?
+
+- Local test: run `python Test_CVE_PushService.py`
+- GitHub Actions: open `Test CVE Push Service` in the `Actions` page and click `Run workflow`
+- This test simulates a high-risk CVE notification and reuses the main service template and push method
+- If you receive this simulated message, it means the PushMe pipeline used by the main CVE service is working correctly
+
+#### What does the PushMe dashboard show now?
+
+- `Today's High-Risk CVEs`: updated by the main service after each run
+- `Today's POC/EXP`: updated by the GitHub repository listener after each run
+- The dashboard is sent only through PushMe and does not affect normal text notifications
+- These titles act as fixed dashboard cards and will be updated in place
 
 ![3.png](images/3.png)
 ![4.png](images/4.png)
@@ -75,7 +108,7 @@ You only need to configure the following variables in the repository Settings �
 - Github Token:
   - Click the link to go to the [create token](https://github.com/settings/tokens/new) page
   - Set the note to `GH_TOKEN`, select "repo", set the expiration time to "No expiration", click "Generate token", and be sure to copy and save your token.
-  - Then configure this variable in Settings → Secrets as done above.
+- Then configure this variable in Settings → Secrets as done above.
 
 ![7.png](images/7.png)
 ![8.png](images/8.png)
@@ -89,9 +122,13 @@ You only need to configure the following variables in the repository Settings �
 - Then click `Actions` again and select `Auto CVE Push Service` to check if there are any errors.
 - If there are no errors, you should start receiving push notifications in Server酱 (make sure to enable notifications in the Server酱 app).
 - Repeat the above steps for any new updates or features. As more features are added, we plan to merge them to avoid complex operations.
-- Example of a push notification:
+- Example of a Server酱3 push notification:
 
 <img src="images/9.jpg" alt="Push Example 2" width="100%">
+
+- Example of a PushMe push notification:
+
+<img src="https://cdn.jsdmirror.com/gh/hzhsec/upload@main/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20260408141004_267_8.jpg" alt="PushMe push example" style="zoom:20%;" />
 
 <details>
 <summary>⚠️ <strong>If you wish to use English template: Please modify the following code. </strong></summary>
