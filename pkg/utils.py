@@ -26,11 +26,14 @@ def format_display_time(time_str: str) -> str:
 
     for fmt in candidates:
         try:
-            return datetime.strptime(text, fmt).strftime("%Y-%m-%d %H:%M")
+            return datetime.strptime(text, fmt).strftime("%m-%d")
         except ValueError:
             continue
 
-    return text.replace("T", " ")[:16]
+    normalized = text.replace("T", " ")
+    if len(normalized) >= 10:
+        return normalized[5:10]
+    return normalized
 
 
 def get_cve_overview(cve_id: str) -> str:
