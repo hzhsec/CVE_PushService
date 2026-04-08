@@ -11,6 +11,28 @@ def get_current_year():
     return datetime.now().year
 
 
+def format_display_time(time_str: str) -> str:
+    """将时间格式化为适合放在标题中的短时间"""
+    if not time_str:
+        return "未知时间"
+
+    text = str(time_str).strip()
+    candidates = [
+        "%Y-%m-%dT%H:%M:%S.%f",
+        "%Y-%m-%dT%H:%M:%S",
+        "%Y-%m-%d %H:%M:%S",
+        "%Y-%m-%d %H:%M",
+    ]
+
+    for fmt in candidates:
+        try:
+            return datetime.strptime(text, fmt).strftime("%Y-%m-%d %H:%M")
+        except ValueError:
+            continue
+
+    return text.replace("T", " ")[:16]
+
+
 def get_cve_overview(cve_id: str) -> str:
     """通过CVE API获取CVE的英文描述信息"""
     try:

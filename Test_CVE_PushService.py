@@ -2,7 +2,7 @@
 import os
 import sys
 
-from pkg.utils import load_template, send_notifications
+from pkg.utils import format_display_time, load_template, send_notifications
 
 
 def main():
@@ -32,7 +32,7 @@ def main():
         url=vuln_info["refs"],
         source=vuln_info["source"],
     )
-    title = f"高危漏洞: {vuln_info['id']} ({vuln_info['cvss_score']})"
+    title = f"[{format_display_time(vuln_info['published_date'])}] 高危漏洞: {vuln_info['id']} ({vuln_info['cvss_score']})"
 
     results = send_notifications(title, message, "🚨漏洞警报")
     print(results)

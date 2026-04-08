@@ -174,7 +174,7 @@ def send_notification(vuln_info, template: str, delaytime: int):
         source=vuln_info['source']
     )
 
-    title = f"高危漏洞: {vuln_info['id']} ({vuln_info['cvss_score']})"
+    title = f"[{format_display_time(vuln_info['published_date'])}] 高危漏洞: {vuln_info['id']} ({vuln_info['cvss_score']})"
 
     results = send_notifications(title, message, "🚨漏洞警报")
     logger.info(f"Notification sent for {vuln_info['id']}, results: {results}")

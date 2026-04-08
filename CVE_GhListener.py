@@ -280,7 +280,7 @@ def send_notification(repo_info: Dict, template: str, delaytime: int):
             'cve_ids') else '未找到该漏洞概述'
     )
 
-    title = f"漏洞仓库: {repo_info['name']}"
+    title = f"[{format_display_time(repo_info['pushed_at'])}] 漏洞仓库: {repo_info['name']}"
 
     results = send_notifications(title, message, "🧰Possible poc/exp")
     logger.info(f"Notification sent for repository: {repo_info['name']}, results: {results}")
