@@ -7,10 +7,8 @@ import time
 from pkg.utils import *
 from typing import List, Dict, Optional
 import logging
-from serverchan_sdk import sc_send
 
 # 获取环境变量
-SCKEY = os.getenv("SCKEY")
 GH_TOKEN = os.getenv('GH_TOKEN')
 DB_PATH = "Github_CVE_Monitor.db"
 LOG_FILE = 'Ghflows.log'  # 日志文件前缀
@@ -284,11 +282,8 @@ def send_notification(repo_info: Dict, template: str, delaytime: int):
 
     title = f"漏洞仓库: {repo_info['name']}"
 
-    try:
-        response = sc_send(SCKEY, title, message, {"tags": "🧰Possible poc/exp"})
-        logger.info(f"Notification sent for repository: {repo_info['name']}, response: {response}")
-    except Exception as e:
-        logger.error(f"Failed to send notification: {str(e)}")
+    results = send_notifications(title, message, "🧰Possible poc/exp")
+    logger.info(f"Notification sent for repository: {repo_info['name']}, results: {results}")
 
 def main():
     """主函数"""

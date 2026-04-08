@@ -1,7 +1,9 @@
 from datetime import datetime
+import os
 import requests
 import logging
 import time
+from serverchan_sdk import sc_send
 
 
 def get_current_year():
@@ -53,3 +55,55 @@ def load_template(file_path: str) -> str:
     except Exception as e:
         logging.error(f"Error loading template from {file_path}: {str(e)}")
         return ""
+
+
+def send_pushme_notification(title: str, content: str, msg_type: str = "markdown") -> bool:
+    """通过 PushMe 发送通知，支持自建服务地址"""
+    pushme_key = os.getenv("PUSHME_KEY")
+    pushme_url = os.getenv("PUSHME_URL", "https://push.i-i.me").strip()
+
+    if not pushme_key:
+        return False
+
+    endpoint = pushme_url.rstrip("/") + "/"
+    data = {
+        "push_key": pushme_key,
+        "title": title,
+        "content": content,
+        "type": msg_type,
+    }
+
+    try:
+        response = requests.post(endpoint, data=data, timeout=15)
+        response.raise_for_status()
+        if response.text.strip() == "success":
+            return True
+        logging.error(f"PushMe response is not success: {response.text}")
+    except Exception as e:
+        logging.error(f"Failed to send PushMe notification: {str(e)}")
+    return False
+
+
+def send_notifications(title: str, content: str, tags: str = "") -> dict:
+    """同时兼容 Server酱3 与 PushMe 推送"""
+    results = {
+        "serverchan_enabled": False,
+        "serverchan_success": False,
+        "pushme_enabled": False,
+        "pushme_success": False,
+    }
+
+    sckey = os.getenv("SCKEY")
+    if sckey:
+        results["serverchan_enabled"] = True
+        try:
+            sc_send(sckey, title, content, {"tags": tags} if tags else None)
+            results["serverchan_success"] = True
+        except Exception as e:
+            logging.error(f"Failed to send ServerChan notification: {str(e)}")
+
+    if os.getenv("PUSHME_KEY"):
+        results["pushme_enabled"] = True
+        results["pushme_success"] = send_pushme_notification(title, content)
+
+    return results

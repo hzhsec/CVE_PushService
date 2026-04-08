@@ -64,11 +64,30 @@
 
 ![2.png](images/2.png)
 
-### 2. 配置 SendKey 与 GithubToken
+### 2. 配置 SendKey / PushMe / GithubToken
 
 本仓库已内置 GitHub Actions 工作流（[AutoCVE.yml](./workflows/AutoCVE.yml) ）。
 你只需在仓库 Settings → Secrets 中配置以下变量：
 - SCKEY : 你刚注册的 Server酱3 SendKey（注意！前后不要有空格回车）
+- PUSHME_KEY : PushMe 的 `push_key`
+- PUSHME_URL : PushMe 服务地址；官方服务可填 `https://push.i-i.me/`，自建服务可填 `http://你的服务器IP:3010/`
+
+> 支持同时配置 `SCKEY` 和 `PUSHME_KEY`，脚本会同时推送；如果只想使用 PushMe，只配置 `PUSHME_KEY` 和 `PUSHME_URL` 即可。
+
+#### PushMe 需要哪些参数？
+
+- `PUSHME_KEY`：必填，对应 PushMe APP 中获取的 `push_key`
+- `PUSHME_URL`：建议填写；你使用自建服务时必须填写，例如 `http://118.178.86.67:3010/`
+- `title` / `content` / `type`：这些由脚本自动生成并发送，无需你额外配置
+
+> 当前项目默认以 `markdown` 类型发送 PushMe 消息。
+
+#### 如何测试 PushMe 是否可用？
+
+- 本地运行：设置好环境变量后执行 `python Test_PushMe.py`
+- GitHub Actions：在仓库 `Actions` 页打开 `Test PushMe`，手动点击 `Run workflow`
+- 成功时，你会收到一条标题为 `PushMe 测试消息` 的通知
+- 失败时，请优先检查 `PUSHME_URL` 是否为 `http://118.178.86.67:3010/`、`PUSHME_KEY` 是否正确，以及服务器安全组/防火墙是否放行 `3010` 端口
 
 ![3.png](images/3.png)
 ![4.png](images/4.png)

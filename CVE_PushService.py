@@ -10,10 +10,8 @@ import sqlite3
 import logging
 from logging.handlers import TimedRotatingFileHandler
 from datetime import datetime
-from serverchan_sdk import sc_send
 
 # 基本配置
-SCKEY = os.getenv("SCKEY")
 DB_PATH = 'vulns.db'  # 数据库文件路径
 LOG_FILE = 'cveflows.log'  # 日志文件前缀
 CVSS_THRESHOLD = 7.0  # 只关注CVSS>=7.0的高危漏洞
@@ -158,7 +156,7 @@ def save_vuln(vuln_info):
     finally:
         conn.close()
 
-# 通过Server酱发送通知
+# 发送通知
 def send_notification(vuln_info, template: str, delaytime: int):
 
     if delaytime > 0:
@@ -178,11 +176,8 @@ def send_notification(vuln_info, template: str, delaytime: int):
 
     title = f"高危漏洞: {vuln_info['id']} ({vuln_info['cvss_score']})"
 
-    try:
-        response = sc_send(SCKEY, title, message, {"tags": "🚨漏洞警报"})
-        logger.info(f"Notification sent for {vuln_info['id']}, response: {response}")
-    except Exception as e:
-        logger.error(f"Failed to send notification: {str(e)}")
+    results = send_notifications(title, message, "🚨漏洞警报")
+    logger.info(f"Notification sent for {vuln_info['id']}, results: {results}")
 
 
 def main():
