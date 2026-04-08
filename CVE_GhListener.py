@@ -2,7 +2,7 @@ import os
 import sqlite3
 import json
 import re
-import datetime
+import datetime as dt
 import time
 from pkg.utils import *
 from typing import List, Dict, Optional
@@ -156,7 +156,7 @@ def save_check_record(total_count: int):
     conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()
     c.execute("INSERT INTO check_records (check_time, total_count) VALUES (?, ?)",
-              (datetime.now().isoformat(), total_count))
+              (dt.datetime.now().isoformat(), total_count))
     conn.commit()
     conn.close()
 
@@ -175,7 +175,7 @@ def count_today_new_repositories() -> int:
     conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()
     try:
-        today = datetime.datetime.utcnow().strftime("%Y-%m-%d")
+        today = dt.datetime.utcnow().strftime("%Y-%m-%d")
         c.execute(
             "SELECT COUNT(1) FROM repositories WHERE status = 'new' AND substr(created_at, 1, 10) = ?",
             (today,)
