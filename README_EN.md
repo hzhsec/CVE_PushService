@@ -128,7 +128,7 @@ You only need to configure the following variables in the repository Settings �
 
 - Example of a PushMe push notification:
 
-<img src="https://cdn.jsdmirror.com/gh/hzhsec/upload@main/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20260408141004_267_8.jpg" alt="PushMe push example" style="zoom:20%;" />
+<img src="https://cdn.jsdmirror.com/gh/hzhsec/upload@main/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20260408141004_267_8.jpg" alt="PushMe push example" width="260" />
 
 <details>
 <summary>⚠️ <strong>If you wish to use English template: Please modify the following code. </strong></summary>

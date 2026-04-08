@@ -129,7 +129,7 @@
 
 - PushMe推送效果
 
-<img src="https://cdn.jsdmirror.com/gh/hzhsec/upload@main/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20260408141004_267_8.jpg" alt="微信图片_20260408141004_267_8.jpg|" style="zoom:20%;" />
+<img src="https://cdn.jsdmirror.com/gh/hzhsec/upload@main/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20260408141004_267_8.jpg" alt="PushMe推送效果" width="260" />
 
 
 
