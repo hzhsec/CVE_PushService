@@ -169,6 +169,22 @@ def get_last_total_count() -> int:
     conn.close()
     return result[0] if result else 0
 
+
+def count_today_new_repositories() -> int:
+    """统计当天新增的漏洞仓库数量，用于 PushMe 数据小屏"""
+    conn = sqlite3.connect(DB_PATH)
+    c = conn.cursor()
+    try:
+        today = datetime.datetime.utcnow().strftime("%Y-%m-%d")
+        c.execute(
+            "SELECT COUNT(1) FROM repositories WHERE status = 'new' AND substr(created_at, 1, 10) = ?",
+            (today,)
+        )
+        result = c.fetchone()
+        return int(result[0]) if result else 0
+    finally:
+        conn.close()
+
 def extract_cve_ids(text: str) -> List[str]:
     """从任意文本中提取 CVE 标识列表（去重，返回大写）"""
     if not text:
@@ -300,6 +316,9 @@ def main():
     # 发送通知
     for repo in new_repos:
         send_notification(repo,template,3)
+
+    dashboard_success = send_pushme_dashboard("今日新增POC/EXP", count_today_new_repositories())
+    logger.info(f"PushMe dashboard updated for repository count: {dashboard_success}")
 
 if __name__ == "__main__":
     main()

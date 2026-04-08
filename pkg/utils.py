@@ -109,6 +109,11 @@ def send_pushme_notification(title: str, content: str, msg_type: str = "markdown
     return False
 
 
+def send_pushme_dashboard(title: str, content: str, msg_type: str = "data") -> bool:
+    """发送 PushMe 数据小屏消息"""
+    return send_pushme_notification(title, str(content), msg_type)
+
+
 def send_notifications(title: str, content: str, tags: str = "") -> dict:
     """同时兼容 Server酱3 与 PushMe 推送"""
     results = {

@@ -156,6 +156,19 @@ def save_vuln(vuln_info):
     finally:
         conn.close()
 
+
+def count_today_high_risk_vulns():
+    """统计当天新增的高危漏洞数量，用于 PushMe 数据小屏"""
+    conn = sqlite3.connect(DB_PATH)
+    c = conn.cursor()
+    try:
+        today = datetime.utcnow().strftime("%Y-%m-%d")
+        c.execute("SELECT COUNT(1) FROM vulns WHERE substr(published_date, 1, 10) = ?", (today,))
+        result = c.fetchone()
+        return int(result[0]) if result else 0
+    finally:
+        conn.close()
+
 # 发送通知
 def send_notification(vuln_info, template: str, delaytime: int):
 
@@ -214,6 +227,9 @@ def main():
             new_ids.append(vuln_info['id'])
 
     logger.info(f"[INFO] Monitoring completed. Found {new_vulns} new vulnerabilities.")
+
+    dashboard_success = send_pushme_dashboard("今日新增高危CVE", count_today_high_risk_vulns())
+    logger.info(f"PushMe dashboard updated for CVE count: {dashboard_success}")
 
     if new_vulns > 0:
         with open("new_vulns.flag", "w") as f:
